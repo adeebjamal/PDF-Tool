@@ -9,7 +9,7 @@ import {upload} from "../middlewares/upload_middleware";
 
 router.get("/", async(req: Request, res: Response) => {
     try {
-        return res.status(200).render("ppttopdf");
+        return res.status(200).render("exceltopdf");
     }
     catch(error) {
         console.log(error);
@@ -20,10 +20,11 @@ router.get("/", async(req: Request, res: Response) => {
 router.post("/", upload.single("UploadedFile"), async(req: Request, res: Response) => {
     try {
         if(req.file) {
-            console.log(req.file);
             const inputPath: string = req.file.path;
-            if(req.file.path.slice(-4).toLowerCase() === "pptx" || req.file.path.slice(-3).toLowerCase() === "ppt") {
-                const inputPath: string = req.file.path;
+            console.log(req.file);
+            const extension1: string = req.file.path.slice(-4).toLowerCase();
+            const extension2: string = req.file.path.slice(-3).toLowerCase();
+            if(extension2 === "xls" || extension1 === "xlsx" || extension1 === "xlsm" || extension1 === "xlsb") {
                 const outputPath: string = req.file.path + ".pdf";
                 const toConvert: Buffer = fs.readFileSync(req.file.path);
                 convert(toConvert, ".pdf", undefined, async(error, result) => {
@@ -47,7 +48,7 @@ router.post("/", upload.single("UploadedFile"), async(req: Request, res: Respons
             }
             else {
                 fs.unlinkSync(inputPath);
-                return res.status(400).json({message: "Upload a PPT / PPTX file."});
+                return res.status(400).json({message: "Upload an Excel file."});
             }
         }
         else {
@@ -58,6 +59,6 @@ router.post("/", upload.single("UploadedFile"), async(req: Request, res: Respons
         console.log(error);
         return res.status(500).render("homepage");
     }
-})
+});
 
 module.exports = router;

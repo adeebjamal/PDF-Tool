@@ -8,6 +8,7 @@ app.use(express.urlencoded({extended: false}));
 // Adding routes
 app.use("/docxtopdf", require("./Routes/Docx_Pdf"));
 app.use("/ppttopdf", require("./Routes/Ppt_Pdf"));
+app.use("/exceltopdf", require("./Routes/Excel_Pdf"));
 
 app.get("/", async(req: Request, res: Response) => {
     try {

@@ -20,6 +20,7 @@ router.get("/", async(req: Request, res: Response) => {
 router.post("/", upload.single("UploadedFile"), async(req: Request, res: Response) => {
     if(req.file) {
         console.log(req.file);
+        const inputPath: string = req.file.path;
         if(req.file.path.slice(-4).toLowerCase() === "docx") {
             const inputPath: string = req.file.path;
             const outputPath: string = inputPath + ".pdf";
@@ -44,6 +45,7 @@ router.post("/", upload.single("UploadedFile"), async(req: Request, res: Respons
             });
         }
         else {
+            fs.unlinkSync(inputPath);
             return res.status(400).json({message: "Selected file is not DOCX"});
         }
     }
