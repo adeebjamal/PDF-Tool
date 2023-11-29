@@ -20,7 +20,7 @@ router.get("/", async(req: Request, res: Response) => {
 router.post("/", upload.single("UploadedFile"), async(req: Request, res: Response) => {
     if(req.file) {
         console.log(req.file);
-        if(req.file.path.slice(-4) === "docx") {
+        if(req.file.path.slice(-4).toLowerCase() === "docx") {
             const inputPath: string = req.file.path;
             const outputPath: string = inputPath + ".pdf";
             const toConvert: Buffer = fs.readFileSync(inputPath);
